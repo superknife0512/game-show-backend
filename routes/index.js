@@ -1,9 +1,14 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-/* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
+const apiController = require('../controller/apiController')
+
+router.get('/test', apiController.testController)
+router.get('/old-data', apiController.getOldData)
+
+router.post('/signIn', apiController.addPlayer)
+
+router.post('/send-answer', apiController.sendAnswer)
+router.post('/question', apiController.questionState)
 
 module.exports = router;
