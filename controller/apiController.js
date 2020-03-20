@@ -53,3 +53,12 @@ exports.getOldData = (req,res) => {
     playerData,
   })
 }
+
+exports.updateScore = (req,res) => {
+  const socket = req.app.get('socketIO'); 
+  playerData = [...req.body.allPlayers];
+  playerData.forEach(ele => {
+    socket.to(ele.socketId).emit('updateEachPlayer', ele.score);
+  })
+  res.status(200).json({msg: 'done'})
+}
