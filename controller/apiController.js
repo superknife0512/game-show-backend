@@ -2,13 +2,17 @@ let playerData = []; // username, socketId, img, score
 
 let answers = []; // username, answer: number
 
-exports.testController = (req,res) => {
-  console.log('Testing...');
-  if (req) {
-    res.json({
-      name: 'Test'
-    })
-  }
+exports.reSignIn = (req, res) => { // req body.username, body.socketId
+  const socket = req.app.get('socketIO');
+  const username = req.body.username;
+  const existedPlayer = playerData.find(ele => ele.username === username);
+  if (existedPlayer) {
+    existedPlayer.socketId = req.body.socketId;
+    socket.emit('globalAddPlayer', [...playerData])
+    res.status(200).json({score: existedPlayer.score})
+  } else {
+    res.status(301).json({msg: 'This user doesn \'t exist yet'});
+  } 
 }
 
 exports.addPlayer = (req, res) => {
@@ -18,7 +22,6 @@ exports.addPlayer = (req, res) => {
     existedPlayer.socketId = req.body.socketId;
     existedPlayer.img = req.body.img;
     existedPlayer.score = req.body.score;
-    console.log('Update player info');
   } else {
     playerData.push({
       ...req.body,
@@ -80,4 +83,10 @@ exports.timeUp = (req, res) => {
   socket.emit('allAnswersSubmitted');
   answers = [];
   res.json({msg: 'OK'});
+}
+
+exports.resetGame = (req, res) => {
+  answers = [];
+  playerData = [];
+  res.status(200).json({msg: 'OK'})
 }
