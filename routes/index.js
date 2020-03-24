@@ -11,5 +11,6 @@ router.post('/signIn', apiController.addPlayer)
 
 router.post('/send-answer', apiController.sendAnswer)
 router.post('/question', apiController.questionState)
+router.post('/time-up', apiController.timeUp)
 
 module.exports = router;

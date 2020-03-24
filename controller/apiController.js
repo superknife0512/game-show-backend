@@ -62,3 +62,22 @@ exports.updateScore = (req,res) => {
   })
   res.status(200).json({msg: 'done'})
 }
+
+exports.timeUp = (req, res) => {
+  const socket = req.app.get('socketIO'); 
+  playerData.forEach(player =>{
+    const existedAnswer = answers.find(ele => {
+      ele.username === player.username
+    })
+    if (!existedAnswer) {
+      answers.push({
+        username: player.username,
+        answer: 1,
+      })
+    }
+  })
+  socket.emit('submitAnswer', [...answers]);
+  socket.emit('allAnswersSubmitted');
+  answers = [];
+  res.json({msg: 'OK'});
+}
