@@ -1,4 +1,4 @@
-let playerData = []; // username, socketId, img, score
+let playerData = []; // username, socketId, img, score, challenge
 
 let answers = []; // username, answer: number
 
